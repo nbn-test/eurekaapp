@@ -75,8 +75,10 @@ pipeline {
 			steps {
 				dir("Docker/"){
 					script {
-						sh "sed -i \"s;latest;version${BUILD_NUMBER};g\" docker-compose.yml"
-						sh "docker-compose up -d"
+						docker.withRegistry('http://localhost:8082', 'e874664f-6680-4efa-bccd-c0dd15626491') {
+							sh "sed -i \"s;latest;version${BUILD_NUMBER};g\" docker-compose.yml"
+							sh "docker-compose up -d"
+						}
 					}
 				}
 			}
