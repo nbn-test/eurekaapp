@@ -1,0 +1,8 @@
+version: '2'
+
+services: 
+  eureka: 
+    image: "localhost:8082/eureka-repo:latest"
+    ports: 
+      - "80:8761"
+    restart: always

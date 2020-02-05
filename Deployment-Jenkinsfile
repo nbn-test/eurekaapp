@@ -1,0 +1,98 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
+def customImage
+
+pipeline {
+	agent any
+	parameters {
+        choice(name: 'gitBranch', choices:"master", description: 'profile Name for build Maven Project')
+        choice(name: 'gitCredentialsId', choices: '5572f8c2-f54f-489e-a0a0-5a4981abdc4e', description: 'others')
+        choice(name: 'gitProjectRepo', choices: "https://github.com/kiraanmore/eurekaapp.git", description: "")
+    }
+/*    environment {
+        mavenProfileCheck=false
+    }*/
+	stages {
+	    stage ('Clean Workspace') {
+          steps {
+            deleteDir()
+          }
+        }
+		stage ("Git clone code repo"){
+				steps {
+					script {
+						 git branch: "${params.gitBranch}", credentialsId: "${params.gitCredentialsId}", url: "${params.gitProjectRepo}"
+							sh "git checkout"	
+/*						else {
+							error "please provide valid bitbucket branch ${params.gitBranch}"
+						} */
+					}
+				}
+			}
+		stage ('Git clone jenkins repo') {
+          steps {
+            script {
+                sh "mkdir devops"
+                dir('devops'){
+                  git branch: "master", credentialsId: "${params.gitCredentialsId}", url: "https://github.com/kiraanmore/jenkinspipeline.git"
+                }
+            }
+          }
+        }
+		stage ("Maven Build") {
+			steps {
+                script {
+                    def mvn_version = 'Maven'
+					withEnv( ["PATH+MAVEN=${tool mvn_version}/bin"] ) {
+						//sh 'docker run --rm --name my-maven-project -v "$(pwd)":/usr/src/mymaven -w /usr/src/mymaven maven:3.3-jdk-8 mvn clean install'
+						sh 'mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -B -V'
+						sh "find . -type f  -name *.jar ! -path \"*/.mvn/*\" ! -path \"*@tmp*\"  | xargs -I{} cp -r {} ${env.WORKSPACE}/devops/Docker/eureka/"
+					}
+                }
+			}
+		}
+		stage('SonarQube Analysis') {
+		    steps {
+                script {
+                    withSonarQubeEnv('SonarQube') { 
+                    sh "mvn sonar:sonar"
+                    }
+                }
+		    }
+        }
+		stage ("Build Docker image") {
+			steps {
+				dir("devops/Docker/eureka"){
+                    script {
+                        customImage = docker.build("localhost:8082/eureka-repo:version${BUILD_NUMBER}","-f Dockerfile .")
+                    }
+                }
+            }
+		}
+		stage ("Push docker image and clean docker images") {
+			steps {
+				script {
+					docker.withRegistry('http://localhost:8082', 'e874664f-6680-4efa-bccd-c0dd15626491') {
+					//withDockerRegistry([ credentialsId: "e874664f-6680-4efa-bccd-c0dd15626491", url: "localhost:8082" ]) {
+					customImage.push()
+					}
+                   			 sh "docker rmi localhost:8082/eureka-repo:version${BUILD_NUMBER}"
+               			 }
+           		 }
+		}
+		stage ("Start containers") {
+			steps {
+				dir("devops/Docker/"){
+					script {
+						sh "sed -i \"s;latest;version${BUILD_NUMBER};g\" docker-compose.yml"
+						sh "docker-compose up -d"
+					}
+				}
+			}
+		
+		}
+	}
+}
+
+
