@@ -1,1 +1,1 @@
-Eureka Application source code
+Eureka Application source code repo
