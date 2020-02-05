@@ -30,16 +30,6 @@ pipeline {
 					}
 				}
 			}
-		stage ('Git clone jenkins repo') {
-          steps {
-            script {
-                sh "mkdir devops"
-                dir('devops'){
-                  git branch: "master", credentialsId: "${params.gitCredentialsId}", url: "https://github.com/kiraanmore/jenkinspipeline.git"
-                }
-            }
-          }
-        }
 		stage ("Maven Build") {
 			steps {
                 script {
@@ -47,7 +37,7 @@ pipeline {
 					withEnv( ["PATH+MAVEN=${tool mvn_version}/bin"] ) {
 						//sh 'docker run --rm --name my-maven-project -v "$(pwd)":/usr/src/mymaven -w /usr/src/mymaven maven:3.3-jdk-8 mvn clean install'
 						sh 'mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -B -V'
-						sh "find . -type f  -name *.jar ! -path \"*/.mvn/*\" ! -path \"*@tmp*\"  | xargs -I{} cp -r {} ${env.WORKSPACE}/devops/Docker/eureka/"
+						sh "cp target/*.jar Docker/eureka/"
 					}
                 }
 			}
@@ -63,7 +53,7 @@ pipeline {
         }
 		stage ("Build Docker image") {
 			steps {
-				dir("devops/Docker/eureka"){
+				dir("Docker/eureka"){
                     script {
                         customImage = docker.build("localhost:8082/eureka-repo:version${BUILD_NUMBER}","-f Dockerfile .")
                     }
@@ -83,7 +73,7 @@ pipeline {
 		}
 		stage ("Start containers") {
 			steps {
-				dir("devops/Docker/"){
+				dir("Docker/"){
 					script {
 						sh "sed -i \"s;latest;version${BUILD_NUMBER};g\" docker-compose.yml"
 						sh "docker-compose up -d"
