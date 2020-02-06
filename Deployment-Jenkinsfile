@@ -1,19 +1,19 @@
 def customImage
 
-pipeline {
-	agent any
-	parameters {
+pipeline { //Start of declerative pipeline 
+	agent any // Node on which pipeline should be executed
+	parameters { // Parameters to be used in the pipeline
         choice(name: 'gitBranch', choices:"master", description: 'profile Name for build Maven Project')
         choice(name: 'gitCredentialsId', choices: '5572f8c2-f54f-489e-a0a0-5a4981abdc4e', description: 'others')
         choice(name: 'gitProjectRepo', choices: "https://github.com/kiraanmore/eurekaapp.git", description: "")
     }
-	stages {
-	    stage ('Clean Workspace') {
+	stages { //block of operations to be performed under pipeline
+	    stage ('Clean Workspace') { //Clean the workspace directory before other steps
           steps {
-            deleteDir()
+            deleteDir() //
           }
         }
-		stage ("Git clone code repo"){
+		stage ("Git clone code repo"){ //Clone git repository.
 				steps {
 					script {
 						 git branch: "${params.gitBranch}", credentialsId: "${params.gitCredentialsId}", url: "${params.gitProjectRepo}"
@@ -21,19 +21,19 @@ pipeline {
 					}
 				}
 			}
-		stage ("Maven Build") {
+		stage ("Maven Build") { //Maven build source code
 			steps {
                 script {
-                    def mvn_version = 'Maven'
+                    def mvn_version = 'Maven' //Define the name of the maven configured in global tool configuration of Jenkins
 					withEnv( ["PATH+MAVEN=${tool mvn_version}/bin"] ) {
 						//sh 'docker run --rm --name my-maven-project -v "$(pwd)":/usr/src/mymaven -w /usr/src/mymaven maven:3.3-jdk-8 mvn clean install'
-						sh 'mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -B'
+						sh 'mvn clean install -DskipTests=true -B' //Maven build
 						sh "cp target/*.jar Docker/eureka/"
 					}
                 }
 			}
 		}
-		stage('SonarQube Analysis') {
+		stage('SonarQube Analysis') { //Sonar scan code
 		    steps {
                 script {
                     withSonarQubeEnv('SonarQube') { 
@@ -42,7 +42,7 @@ pipeline {
                 }
 		    }
         }
-		stage ("Build Docker image") {
+		stage ("Build Docker image") { //Build docker image
 			steps {
 				dir("Docker/eureka"){
                     script {
@@ -51,7 +51,7 @@ pipeline {
                 }
             }
 		}
-		stage ("Push docker image and clean docker images") {
+		stage ("Push docker image and clean docker images") { //Push docker image to Nexus repository
 			steps {
 				script {
 					docker.withRegistry('http://localhost:8082', 'e874664f-6680-4efa-bccd-c0dd15626491') {
@@ -61,7 +61,7 @@ pipeline {
                			 }
            		 }
 		}
-		stage ("Start containers") {
+		stage ("Start containers") { //Start docker container
 			steps {
 				dir("Docker/"){
 					script {
@@ -76,5 +76,3 @@ pipeline {
 		}
 	}
 }
-
-
