@@ -1,4 +1,4 @@
-def customImage
+def customImage //Variable declaration
 
 pipeline { //Start of declerative pipeline 
 	agent any // Node on which pipeline should be executed
@@ -10,14 +10,14 @@ pipeline { //Start of declerative pipeline
 	stages { //block of operations to be performed under pipeline
 	    stage ('Clean Workspace') { //Clean the workspace directory before other steps
           steps {
-            deleteDir() //
+            deleteDir() //Method provided by Pipeline : Basic Steps plugin
           }
         }
 		stage ("Git clone code repo"){ //Clone git repository.
 				steps {
 					script {
 						 git branch: "${params.gitBranch}", credentialsId: "${params.gitCredentialsId}", url: "${params.gitProjectRepo}"
-							sh "git checkout"	
+							sh "git checkout"	//Checkout git code
 					}
 				}
 			}
@@ -28,16 +28,16 @@ pipeline { //Start of declerative pipeline
 					withEnv( ["PATH+MAVEN=${tool mvn_version}/bin"] ) {
 						//sh 'docker run --rm --name my-maven-project -v "$(pwd)":/usr/src/mymaven -w /usr/src/mymaven maven:3.3-jdk-8 mvn clean install'
 						sh 'mvn clean install -DskipTests=true -B' //Maven build
-						sh "cp target/*.jar Docker/eureka/"
+						sh "cp target/*.jar Docker/eureka/" //Copy jar files from target directory to Docker directory
 					}
                 }
 			}
 		}
-		stage('SonarQube Analysis') { //Sonar scan code
+		stage('SonarQube Analysis') { //Sonarqube static code analysis
 		    steps {
                 script {
-                    withSonarQubeEnv('SonarQube') { 
-                    sh "mvn sonar:sonar"
+                    withSonarQubeEnv('SonarQube') { //SonarQube is the name configured in Jenkins Global tool configuration
+                    sh "mvn sonar:sonar" //Execute sonar scan
                     }
                 }
 		    }
@@ -46,7 +46,7 @@ pipeline { //Start of declerative pipeline
 			steps {
 				dir("Docker/eureka"){
                     script {
-                        customImage = docker.build("localhost:8082/eureka-repo:version${BUILD_NUMBER}","-f Dockerfile .")
+                        customImage = docker.build("localhost:8082/eureka-repo:version${BUILD_NUMBER}","-f Dockerfile .") //Using inbuilt method of docker image is built
                     }
                 }
             }
@@ -54,20 +54,20 @@ pipeline { //Start of declerative pipeline
 		stage ("Push docker image and clean docker images") { //Push docker image to Nexus repository
 			steps {
 				script {
-					docker.withRegistry('http://localhost:8082', 'e874664f-6680-4efa-bccd-c0dd15626491') {
-					customImage.push()
+					docker.withRegistry('http://localhost:8082', 'e874664f-6680-4efa-bccd-c0dd15626491') { //Using inbuilt method withRegistry we can interact with custom registires
+					customImage.push() //Push the docker image
 					}
-                   			 sh "docker rmi localhost:8082/eureka-repo:version${BUILD_NUMBER}"
+                   			 sh "docker rmi localhost:8082/eureka-repo:version${BUILD_NUMBER}" //Remove the local docker image
                			 }
            		 }
 		}
 		stage ("Start containers") { //Start docker container
 			steps {
-				dir("Docker/"){
+				dir("Docker/"){ //Execute script in Docker directory
 					script {
-						docker.withRegistry('http://localhost:8082', 'e874664f-6680-4efa-bccd-c0dd15626491') {
-							sh "sed -i \"s;latest;version${BUILD_NUMBER};g\" docker-compose.yml"
-							sh "docker-compose up -d"
+						docker.withRegistry('http://localhost:8082', 'e874664f-6680-4efa-bccd-c0dd15626491') { //Using inbuilt method withRegistry to pull docker image
+							sh "sed -i \"s;latest;version${BUILD_NUMBER};g\" docker-compose.yml" //Modifying yml file with the tag name for new docker image
+							sh "docker-compose up -d" //Starting docker container 
 						}
 					}
 				}
