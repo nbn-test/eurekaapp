@@ -16,7 +16,7 @@ pipeline { //Start of declerative pipeline
 		stage ("Git clone code repo"){ //Clone git repository.
 				steps {
 					script {
-					//	 git branch: "${params.gitBranch}", credentialsId: "${params.gitCredentialsId}", url: "${params.gitProjectRepo}"
+						 git branch: "${params.gitBranch}", credentialsId: "${params.gitCredentialsId}", url: "${params.gitProjectRepo}"
 							sh "git checkout"	//Checkout git code
 					}
 				}
