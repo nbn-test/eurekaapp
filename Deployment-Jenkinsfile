@@ -13,14 +13,14 @@ pipeline { //Start of declerative pipeline
             deleteDir() //Method provided by Pipeline : Basic Steps plugin
           }
         }
-		/*stage ("Git clone code repo"){ //Clone git repository.
+		stage ("Git clone code repo"){ //Clone git repository.
 				steps {
 					script {
-						 git branch: "${params.gitBranch}", credentialsId: "${params.gitCredentialsId}", url: "${params.gitProjectRepo}"
+					//	 git branch: "${params.gitBranch}", credentialsId: "${params.gitCredentialsId}", url: "${params.gitProjectRepo}"
 							sh "git checkout"	//Checkout git code
 					}
 				}
-			}*/
+			}
 		stage ("Maven Build") { //Maven build source code
 			steps {
                 script {
