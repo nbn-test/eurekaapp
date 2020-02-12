@@ -52,109 +52,6 @@
 		<tag>HEAD</tag>
 	</scm>
 
-	<!-- This section required for release at Maven Central. For a full list
-		of Developers, please see https://github.com/orgs/biojava/members For a list
-		of contributors, please see https://github.com/biojava/biojava/graphs/contributors -->
-	<developers>
-		<developer>
-			<id>andreas</id>
-			<name>Andreas Prlic</name>
-			<email>andreas.prlic@gmail.com</email>
-			<url>http://www.spice-3d.org</url>
-			<organization>University of California, San Diego</organization>
-			<organizationUrl>http://www.rcsb.org</organizationUrl>
-			<roles>
-				<role>project lead</role>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-			<timezone>-9</timezone>
-			<properties>
-				<picUrl>http://tinyurl.com/mymsfga</picUrl>
-			</properties>
-		</developer>
-		<developer>
-			<id>lafita</id>
-			<name>Aleix Lafita</name>
-		</developer>
-		<developer>
-			<name>Amr AL-HOSSARY</name>
-		</developer>
-		<developer>
-			<name>Andreas Dräger</name>
-		</developer>
-		<developer>
-			<name>Andy Yates</name>
-		</developer>
-		<developer>
-            <name>Anthony Bradley</name>
-      	</developer>
-		<developer>
-			<name>Carmelo Foti</name>
-		</developer>
-		<developer>
-			<name>Chuan Hock Koh</name>
-		</developer>
-		<developer>
-			<name>Douglas Myers-Turnbull</name>
-		</developer>
-		<developer>
-			<name>Gediminas Rimsa</name>
-		</developer>
-		<developer>
-			<name>George Waldon</name>
-		</developer>
-		<developer>
-			<name>Hannes Brandstätter-Müller</name>
-		</developer>
-		<developer>
-			<name>Elinow</name>
-		</developer>
-		<developer>
-			<name>Jianjiong Gao</name>
-		</developer>
-		<developer>
-			<name>Jonathan Warren</name>
-		</developer>
-		<developer>
-			<name>Jose Manuel Duarte</name>
-		</developer>
-		<developer>
-			<name>Jules Jacobsen</name>
-		</developer>
-		<developer>
-			<name>Karl Nicholas</name>
-		</developer>
-		<developer>
-			<name>Mark Chapman</name>
-		</developer>
-		<developer>
-			<name>Michael Heuer</name>
-		</developer>
-		<developer>
-			<name>Peter Rose</name>
-		</developer>
-		<developer>
-			<name>Peter Troshin</name>
-		</developer>
-		<developer>
-			<name>Richard Holland</name>
-		</developer>
-		<developer>
-			<name>Robert Thornton</name>
-		</developer>
-		<developer>
-			<name>Scooter Willis</name>
-		</developer>
-		<developer>
-			<name>Spencer Bliven</name>
-		</developer>
-		<developer>
-			<name>Sylvain Foisy</name>
-		</developer>
-	</developers>
-
-
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -312,15 +209,9 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.0.0-M3</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>3.7.1</version>
 				</plugin>
-
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
@@ -363,15 +254,6 @@
 			<!--</plugin> -->
 
 			<!-- give more memory for junit tests -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<argLine>-Xmx1500M</argLine>
-					<reuseForks>false</reuseForks>
-					<forkCount>1</forkCount>
-				</configuration>
-			</plugin>
 
 
 			<plugin>
@@ -666,28 +548,7 @@
 	</profiles>
 
 	<modules>
-
 		<module>biojava-core</module>
-<!--		<module>biojava-alignment</module>
-		<module>biojava-structure</module>
-		<module>biojava-structure-gui</module>
-		<module>biojava-genome</module>
-		<module>biojava-modfinder</module>
-		<module>biojava-ws</module>
-		<module>biojava-protein-disorder</module>
-		<module>biojava-aa-prop</module>
-		<module>biojava-survival</module>
-		<module>biojava-ontology</module> -->
-		<!-- Keep integration tests last  -->
-		<!-- <module>biojava-integrationtest</module> -->
 	</modules>
-	<inceptionYear>2000</inceptionYear>
-	<issueManagement>
-		<system>Github</system>
-		<url>https://github.com/biojava/biojava/issues</url>
-	</issueManagement>
-	<ciManagement>
-			<system>Travis</system>
-			<url>https://travis-ci.org/biojava/biojava</url>
-	</ciManagement>
 </project>
+
