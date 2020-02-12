@@ -30,7 +30,7 @@ pipeline { //Start of declerative pipeline
 						sh 'mvn clean install' // -DskipTests=true -B' //Maven build
 						sh "mvn checkstyle:checkstyle"
 						recordIssues(tools: [checkStyle(reportEncoding: 'UTF-8')])
-						sh "cp target/*.jar Docker/eureka/" //Copy jar files from target directory to Docker directory
+						sh "cp */target/*.jar Docker/eureka/" //Copy jar files from target directory to Docker directory
 					}
                 }
 			}
