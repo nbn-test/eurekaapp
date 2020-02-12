@@ -17,7 +17,7 @@
  *
  *      http://www.biojava.org/
  *
- */
+ *
 package org.biojava.nbio.core.sequence.loader;
 
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
@@ -218,3 +218,5 @@ public class GenbankProxySequenceReaderTest {
 
 	}
 }
+*/
+
