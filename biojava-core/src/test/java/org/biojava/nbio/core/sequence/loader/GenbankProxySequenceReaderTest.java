@@ -18,6 +18,7 @@
  *      http://www.biojava.org/
  *
  *
+ 
 package org.biojava.nbio.core.sequence.loader;
 
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
@@ -46,12 +47,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-/**
- * Testing example for issue #834
- *
- * @author Jacek Grzebyta
- * @author Paolo Pavan
- */
+
 @RunWith(Parameterized.class)
 public class GenbankProxySequenceReaderTest {
 
@@ -78,12 +74,7 @@ public class GenbankProxySequenceReaderTest {
 		return Arrays.asList(accessorIds);
 	}
 
-	/**
-	 * In {@link GenbankProxySequenceReader} there is a check to see if the requested files are already in the temp
-	 * directory before attempting to retrieve them from the remote server. so simply copying the test files to the temp
-	 * directory avoids calling out to the server and hitting a 429 status code from the server which fails the build.
-	 * @throws IOException
-	 */
+
 	@Before
 	public void copyTestFiles() throws IOException {
 		Collection<String[]> accessorIds = getExamples();
@@ -92,11 +83,7 @@ public class GenbankProxySequenceReaderTest {
 		}
 	}
 
-	/**
-	 * Convenience method for {@link GenbankProxySequenceReaderTest#copyTestFiles()}
-	 * @param filename name of the file to copy from the resource folder
-	 * @throws IOException when something goes wrong with copying the files.
-	 */
+
 	private void copyTestFileToWorkingDirectory(String filename) throws IOException {
 		String destRoot = System.getProperty("java.io.tmpdir");
 
@@ -134,10 +121,7 @@ public class GenbankProxySequenceReaderTest {
 
 		Assert.assertNotNull("protein sequence is null", seq);
 
-		/*
-		 parse description from header. There is no separate interface/abstract class for method getHeader()
-		 so it should be done here (manualy).
-		 */
+		
 		genbankReader.getHeaderParser().parseHeader(genbankReader.getHeader(), seq);
 
 		// test description
@@ -198,12 +182,7 @@ public class GenbankProxySequenceReaderTest {
 					AbstractSequence<?> parentSeq = seq.getParentSequence();
 					Assert.assertNotNull(parentSeq);
 
-					/*
-					 Sometimes protein might have many 'parents' with different accessions
-					 so accession is not set.
-
-					 That test is always failed
-					 */
+					
 					//Assert.assertTrue(parentSeq.getAccession());
 					Assert.assertTrue(!parentSeq.getSequenceAsString().isEmpty());
 				}
