@@ -2,7 +2,7 @@ version: '2'
 
 services: 
   eureka: 
-    image: "40141c99.ngrok.io/eureka-repo:latest"
+    image: "reponame/eureka-repo:latest"
     ports: 
       - "8085:8761"
     restart: always
