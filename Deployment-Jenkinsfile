@@ -58,7 +58,7 @@ pipeline { //Start of declerative pipeline
 		stage ("Push docker image and clean docker images") { //Push docker image to Nexus repository
 			steps {
 				script {
-					registry = http://${params.dockerrepo}
+					registry = "http://${params.dockerrepo}"
 					docker.withRegistry(${registry}, 'e874664f-6680-4efa-bccd-c0dd15626491') { //Using inbuilt method withRegistry we can interact with custom registires
 					customImage.push() //Push the docker image
 					}
