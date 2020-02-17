@@ -6,6 +6,7 @@ pipeline { //Start of declerative pipeline
         choice(name: 'gitBranch', choices:"master", description: 'profile Name for build Maven Project')
         choice(name: 'gitCredentialsId', choices: '5572f8c2-f54f-489e-a0a0-5a4981abdc4e', description: 'others')
         choice(name: 'gitProjectRepo', choices: "https://github.com/kiraanmore/eurekaapp.git", description: "")
+	choice(name: 'dockerrepo', choices: "40141c99.ngrok.io", description: "Docker repo URL")
     }
 	stages { //block of operations to be performed under pipeline
 	    stage ('Clean Workspace') { //Clean the workspace directory before other steps
@@ -48,7 +49,7 @@ pipeline { //Start of declerative pipeline
 			steps {
 				dir("Docker/eureka"){
                     script {
-                        customImage = docker.build("localhost:8082/eureka-repo:version${BUILD_NUMBER}","-f Dockerfile .") //Using inbuilt method of docker image is built
+                        customImage = docker.build("${params.dockerrepo}/eureka-repo:version${BUILD_NUMBER}","-f Dockerfile .") //Using inbuilt method of docker image is built
                     }
                 }
             }
@@ -56,10 +57,10 @@ pipeline { //Start of declerative pipeline
 		stage ("Push docker image and clean docker images") { //Push docker image to Nexus repository
 			steps {
 				script {
-					docker.withRegistry('http://localhost:8082', 'e874664f-6680-4efa-bccd-c0dd15626491') { //Using inbuilt method withRegistry we can interact with custom registires
+					docker.withRegistry('http://${params.dockerrepo}', 'e874664f-6680-4efa-bccd-c0dd15626491') { //Using inbuilt method withRegistry we can interact with custom registires
 					customImage.push() //Push the docker image
 					}
-                   			 sh "docker rmi localhost:8082/eureka-repo:version${BUILD_NUMBER}" //Remove the local docker image
+                   			 sh "docker rmi ${params.dockerrepo}/eureka-repo:version${BUILD_NUMBER}" //Remove the local docker image
                			 }
            		 }
 		}
@@ -67,7 +68,7 @@ pipeline { //Start of declerative pipeline
 			steps {
 				dir("Docker/"){ //Execute script in Docker directory
 					script {
-						docker.withRegistry('http://localhost:8082', 'e874664f-6680-4efa-bccd-c0dd15626491') { //Using inbuilt method withRegistry to pull docker image
+						docker.withRegistry('http://${params.dockerrepo}', 'e874664f-6680-4efa-bccd-c0dd15626491') { //Using inbuilt method withRegistry to pull docker image
 							sh "sed -i \"s;latest;version${BUILD_NUMBER};g\" docker-compose.yml" //Modifying yml file with the tag name for new docker image
 							sh "docker-compose up -d" //Starting docker container 
 						}
