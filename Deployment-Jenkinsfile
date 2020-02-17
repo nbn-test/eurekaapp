@@ -59,6 +59,7 @@ pipeline { //Start of declerative pipeline
 			steps {
 				script {
 					registry = "http://${params.dockerrepo}"
+					print "Resitry URL is : ${registry}"
 					docker.withRegistry(${registry}, 'e874664f-6680-4efa-bccd-c0dd15626491') { //Using inbuilt method withRegistry we can interact with custom registires
 					customImage.push() //Push the docker image
 					}
