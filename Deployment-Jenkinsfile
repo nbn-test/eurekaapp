@@ -1,4 +1,5 @@
 def customImage //Variable declaration
+def registry //Variable declaration
 
 pipeline { //Start of declerative pipeline 
 	agent any // Node on which pipeline should be executed
@@ -57,7 +58,8 @@ pipeline { //Start of declerative pipeline
 		stage ("Push docker image and clean docker images") { //Push docker image to Nexus repository
 			steps {
 				script {
-					docker.withRegistry('http://"${params.dockerrepo}"', 'e874664f-6680-4efa-bccd-c0dd15626491') { //Using inbuilt method withRegistry we can interact with custom registires
+					registry = http://${params.dockerrepo}
+					docker.withRegistry(${registry}, 'e874664f-6680-4efa-bccd-c0dd15626491') { //Using inbuilt method withRegistry we can interact with custom registires
 					customImage.push() //Push the docker image
 					}
                    			 sh "docker rmi ${params.dockerrepo}/eureka-repo:version${BUILD_NUMBER}" //Remove the local docker image
@@ -68,7 +70,7 @@ pipeline { //Start of declerative pipeline
 			steps {
 				dir("Docker/"){ //Execute script in Docker directory
 					script {
-						docker.withRegistry('http://${params.dockerrepo}', 'e874664f-6680-4efa-bccd-c0dd15626491') { //Using inbuilt method withRegistry to pull docker image
+						docker.withRegistry(${registry}, 'e874664f-6680-4efa-bccd-c0dd15626491') { //Using inbuilt method withRegistry to pull docker image
 							sh "sed -i \"s;latest;version${BUILD_NUMBER};g\" docker-compose.yml" //Modifying yml file with the tag name for new docker image
 							sh "sed -i \"s;reponame;${params.dockerrepo};g\" docker-compose.yml"
 							sh "docker-compose up -d" //Starting docker container 
