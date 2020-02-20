@@ -83,9 +83,9 @@ pipeline { //Start of declerative pipeline
 							sh "sed -i \"s;latest;version${BUILD_NUMBER};g\" springBootMongo.yml" //Modifying yml file with the tag name for new docker image
 							sh "sed -i \"s;reponame;${params.dockerrepo};g\" springBootMongo.yml"
 							def ipaddress = sh(script: "cat ../ipaddress.txt", returnStdout: true)
-        						sh "ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/id_rsa ec2-user@${ipaddress} \"docker login --password=${PASSWORD} --username=${USERNAME} ${registry}\""
-							sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/id_rsa springBootMongo.yml ec2-user@${ipaddress}:/home/ec2-user/"
-							//sh "ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/id_rsa ubuntu@${ipaddress} \"kubectl apply -f /home/ubuntu/springBootMongo.yml\""				
+        						sh "ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/id_rsa ubuntu@${ipaddress} \"docker login --password=${PASSWORD} --username=${USERNAME} ${registry}\""
+							sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/id_rsa springBootMongo.yml ubuntu@${ipaddress}:/home/ubuntu/"
+							sh "ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/id_rsa ubuntu@${ipaddress} \"kubectl apply -f /home/ubuntu/springBootMongo.yml\""				
 								}
 					}
 				}
