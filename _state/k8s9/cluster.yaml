@@ -1,0 +1,90 @@
+clusterAPI:
+  metadata:
+    creationTimestamp: null
+    name: k8s9
+  spec:
+    clusterNetwork:
+      dnsDomain: ""
+      pods:
+        cidrBlocks: null
+      services:
+        cidrBlocks: null
+    providerConfig: '{"cloud":"amazon","location":"us-west-2","SSH":{"metadata":{"creationTimestamp":null},"name":"k8s9","user":"ubuntu","identifier":"k8s9","publicKeyPath":"~/.ssh/id_rsa.pub","publicKeyData":"c3NoLXJzYSBBQUFBQjNOemFDMXljMkVBQUFBREFRQUJBQUFCQVFEUlE1NHFiblYreXFrZ1N3aVdqcG91Nng0dHpLb1Y4QjZxN0JSQXNXQks2U1YrVFNyVHFzeDJNU2pHMFpWaUNLSllCdXFPZ1BpSWVPalVPSUcreElRU3FqQUkwbC9DZXJRNnljaitwN0xJYXdoS1RwZEhVQUFvaGlsRVF6elorSFVyYU1laDZNOWowM05XTmJJQkluN1haZmZlN2ppcTBBNGZ1WWU0SWlkcENhVlp6Z3BUM0h5Um1qdDhBNW13aTRwaGJJUEtEZVlJT0xaNmlCZ20rZzBTZmxtTUFzcGRwdGpaQkVSQmRydXpPMFhPbFN3dlZrQ3FxeFhwcWtnRkw1b3hBQzR6SS9iVkxhTDRjWlA4YlFOcTVaTlBVQWo2QkhnbzZ3RlBNd1B5cEFXdVBLbng1ajQxTDdXWVpmY0orMXlmUlAwUkRGcmZCc05zQWlJbFc2T0wgY3JlYXRpbmcgU1NICg==","publicKeyFingerprint":"2e:b9:c9:85:07:5f:52:8a:57:b4:e4:f0:35:f1:64:85","port":"22"},"network":{"metadata":{"name":"k8s9","creationTimestamp":null},"cidr":"10.0.0.0/16","identifier":"vpc-0ffc178ed8e73c88c","type":"public","internetgw":{"metadata":{"creationTimestamp":null},"identifier":"igw-0f9623caabbcf7774"}},"values":{"metadata":{"creationTimestamp":null},"itemMap":{"INJECTEDMASTER":"10.0.0.210:443","INJECTEDPORT":"443","INJECTEDTOKEN":"baad3d.5baa4b5c10e108ed"}},"kubernetesAPI":{"metadata":{"creationTimestamp":null},"endpoint":"18.237.3.85","port":"443"}}'
+  status:
+    apiEndpoints: null
+    errorMessage: ""
+    errorReason: ""
+    providerStatus: ""
+controlPlane:
+  metadata:
+    creationTimestamp: null
+  spec:
+    selector: {}
+    template:
+      metadata:
+        creationTimestamp: null
+      spec:
+        metadata:
+          creationTimestamp: null
+        providerConfig: ""
+        versions:
+          containerRuntime:
+            name: ""
+            version: ""
+          kubelet: ""
+  status:
+    replicas: 0
+machineSets:
+- metadata:
+    creationTimestamp: null
+    name: k8s9.master
+  spec:
+    selector: {}
+    template:
+      metadata:
+        creationTimestamp: null
+      spec:
+        metadata:
+          creationTimestamp: null
+        providerConfig: '{"serverPool":{"metadata":{"creationTimestamp":null},"identifier":"k8s9.master","type":"master","name":"k8s9.master","image":"ami-79873901","size":"t2.medium","instanceProfile":{"metadata":{"creationTimestamp":null},"name":"k8s9-KubicornMasterInstanceProfile","role":{"metadata":{"creationTimestamp":null},"name":"k8s9-KubicornMasterRole","policies":[{"name":"MasterPolicy","document":"{\n\t\t\t\t\t\t\t\t  \"Version\":
+          \"2012-10-17\",\n\t\t\t\t\t\t\t\t  \"Statement\": [\n\t\t\t\t\t\t\t\t\t
+          {\n\t\t\t\t\t\t\t\t\t\t\"Effect\": \"Allow\",\n\t\t\t\t\t\t\t\t\t\t\"Action\":
+          [\n\t\t\t\t\t\t\t\t\t\t   \"ec2:*\",\n\t\t\t\t\t\t\t\t\t\t   \"elasticloadbalancing:*\",\n\t\t\t\t\t\t\t\t\t\t   \"ecr:GetAuthorizationToken\",\n\t\t\t\t\t\t\t\t\t\t   \"ecr:BatchCheckLayerAvailability\",\n\t\t\t\t\t\t\t\t\t\t   \"ecr:GetDownloadUrlForLayer\",\n\t\t\t\t\t\t\t\t\t\t   \"ecr:GetRepositoryPolicy\",\n\t\t\t\t\t\t\t\t\t\t   \"ecr:DescribeRepositories\",\n\t\t\t\t\t\t\t\t\t\t   \"ecr:ListImages\",\n\t\t\t\t\t\t\t\t\t\t   \"ecr:BatchGetImage\",\n\t\t\t\t\t\t\t\t\t\t   \"autoscaling:DescribeAutoScalingGroups\",\n\t\t\t\t\t\t\t\t\t\t   \"autoscaling:UpdateAutoScalingGroup\"\n\t\t\t\t\t\t\t\t\t\t],\n\t\t\t\t\t\t\t\t\t\t\"Resource\":
+          \"*\"\n\t\t\t\t\t\t\t\t\t }\n\t\t\t\t\t\t\t\t  ]\n\t\t\t\t\t\t\t\t}"}]}},"bootstrapScripts":["bootstrap/amazon_k8s_ubuntu_16.04_master.sh"],"subnets":[{"metadata":{"creationTimestamp":null},"identifier":"subnet-0286500c23a6411e5","cidr":"10.0.0.0/24","zone":"us-west-2a","name":"k8s9.master"}],"firewalls":[{"metadata":{"creationTimestamp":null},"identifier":"sg-00f3d02b4122153f1","ingressRules":[{"metadata":{"creationTimestamp":null},"ingressFromPort":"22","ingressToPort":"22","ingressSource":"0.0.0.0/0","ingressProtocol":"tcp"},{"metadata":{"creationTimestamp":null},"ingressFromPort":"443","ingressToPort":"443","ingressSource":"0.0.0.0/0","ingressProtocol":"tcp"},{"metadata":{"creationTimestamp":null},"ingressFromPort":"0","ingressToPort":"65535","ingressSource":"10.0.100.0/24","ingressProtocol":"-1"},{"metadata":{"creationTimestamp":null},"ingressFromPort":"0","ingressToPort":"65535","ingressSource":"__self__","ingressProtocol":"-1"}],"name":"k8s9.master-external-5e4e6cec-7af5-40df-7e0e-43c1e6e50a55"}],"awsconfiguration":{}}}'
+        roles:
+        - Master
+        versions:
+          containerRuntime:
+            name: ""
+            version: ""
+          kubelet: ""
+  status:
+    replicas: 0
+- metadata:
+    creationTimestamp: null
+    name: k8s9.node
+  spec:
+    selector: {}
+    template:
+      metadata:
+        creationTimestamp: null
+      spec:
+        metadata:
+          creationTimestamp: null
+        providerConfig: '{"serverPool":{"metadata":{"creationTimestamp":null},"identifier":"k8s9.node","type":"node","name":"k8s9.node","image":"ami-79873901","size":"t2.medium","instanceProfile":{"metadata":{"creationTimestamp":null},"name":"k8s9-KubicornNodeInstanceProfile","role":{"metadata":{"creationTimestamp":null},"name":"k8s9-KubicornNodeRole","policies":[{"name":"NodePolicy","document":"{\n\t\t\t\t\t\t\t\t  \"Version\":
+          \"2012-10-17\",\n\t\t\t\t\t\t\t\t  \"Statement\": [\n\t\t\t\t\t\t\t\t\t
+          {\n\t\t\t\t\t\t\t\t\t\t\"Effect\": \"Allow\",\n\t\t\t\t\t\t\t\t\t\t\"Action\":
+          [\n\t\t\t\t\t\t\t\t\t\t   \"ec2:Describe*\",\n\t\t\t\t\t\t\t\t\t\t   \"ec2:AttachVolume\",\n\t\t\t\t\t\t\t\t\t\t   \"ec2:DetachVolume\",\n\t\t\t\t\t\t\t\t\t\t   \"ecr:GetAuthorizationToken\",\n\t\t\t\t\t\t\t\t\t\t   \"ecr:BatchCheckLayerAvailability\",\n\t\t\t\t\t\t\t\t\t\t   \"ecr:GetDownloadUrlForLayer\",\n\t\t\t\t\t\t\t\t\t\t   \"ecr:GetRepositoryPolicy\",\n\t\t\t\t\t\t\t\t\t\t   \"ecr:DescribeRepositories\",\n\t\t\t\t\t\t\t\t\t\t   \"ecr:ListImages\",\n\t\t\t\t\t\t\t\t\t\t   \"ecr:BatchGetImage\",\n\t\t\t\t\t\t\t\t\t\t   \"autoscaling:DescribeAutoScalingGroups\",\n\t\t\t\t\t\t\t\t\t\t   \"autoscaling:UpdateAutoScalingGroup\"\n\t\t\t\t\t\t\t\t\t\t],\n\t\t\t\t\t\t\t\t\t\t\"Resource\":
+          \"*\"\n\t\t\t\t\t\t\t\t\t }\n\t\t\t\t\t\t\t\t  ]\n\t\t\t\t\t\t\t\t}"}]}},"bootstrapScripts":["bootstrap/amazon_k8s_ubuntu_16.04_node.sh"],"subnets":[{"metadata":{"creationTimestamp":null},"identifier":"subnet-0db39864973899661","cidr":"10.0.100.0/24","zone":"us-west-2b","name":"k8s9.node"}],"firewalls":[{"metadata":{"creationTimestamp":null},"identifier":"sg-0c825eda5a5e46d43","ingressRules":[{"metadata":{"creationTimestamp":null},"ingressFromPort":"22","ingressToPort":"22","ingressSource":"0.0.0.0/0","ingressProtocol":"tcp"},{"metadata":{"creationTimestamp":null},"ingressFromPort":"0","ingressToPort":"65535","ingressSource":"10.0.0.0/24","ingressProtocol":"-1"},{"metadata":{"creationTimestamp":null},"ingressFromPort":"0","ingressToPort":"65535","ingressSource":"__self__","ingressProtocol":"-1"}],"name":"k8s9.node-external-5e4e6cec-c896-8f00-58fc-372c04d2090b"}],"awsconfiguration":{}}}'
+        roles:
+        - Node
+        versions:
+          containerRuntime:
+            name: ""
+            version: ""
+          kubelet: ""
+  status:
+    replicas: 0
+metadata:
+  creationTimestamp: null
+name: k8s9
