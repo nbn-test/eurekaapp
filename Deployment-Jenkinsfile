@@ -70,7 +70,7 @@ pipeline { //Start of declerative pipeline
                			 }
            		 }
 		}
-		stage ("Start containers") { //Start docker container
+		stage ("Start containers") { //Start docker containers
 			steps {
 				dir("Docker/"){ //Execute script in Docker directory
 					script {
