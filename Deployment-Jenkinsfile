@@ -83,7 +83,7 @@ pipeline { //Start of declerative pipeline
 							sh "sed -i \"s;latest;version${BUILD_NUMBER};g\" springBootMongo.yml" //Modifying yml file with the tag name for new docker image
 							sh "sed -i \"s;reponame;${params.dockerrepo};g\" springBootMongo.yml"
 							def ipaddress = sh(script: "cat ../ipaddress.txt", returnStdout: true)
-							sh "sed -i \"s/IPADDRESS/${ipaddress}/g\" script.sh"
+							sh "sed -i \"s/ipaddr/${ipaddress}/g\" script.sh"
 							sh "chmod +x script.sh"
 							sh "sh script.sh"
 								}
