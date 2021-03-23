@@ -2,7 +2,7 @@ version: '2'
 
 services: 
   eureka: 
-    image: "reponame/eureka-repo:latest"
+    image: "661413504645.dkr.ecr.us-east-2.amazonaws.com/specsavers:20"
     ports: 
-      - "8085:8761"
+      - "8761:8761"
     restart: always
