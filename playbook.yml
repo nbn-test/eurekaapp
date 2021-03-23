@@ -1,8 +1,8 @@
 ---
 - hosts: localhost
   gather_facts: no
-  remote_user: ec2-user
-  become: yes
+  remote_user: jenkins
+  become: no
   tasks:
     - name: Start docker container
       docker_container:
