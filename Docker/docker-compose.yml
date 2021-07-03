@@ -1,8 +1,24 @@
-version: '2'
+version: '3'
+services:
+  nginx:
+   container_name: some-nginx
+   build: ./nginx
+   restart: always
+   ports:
+   - 8081:80
+   depends_on:
+   - eureka
+   networks:
+   - frontend
 
-services: 
-  eureka: 
-    image: "661413504645.dkr.ecr.us-east-2.amazonaws.com/specsavers:20"
-    ports: 
-      - "8761:8761"
-    restart: always
+  eureka:
+   restart: always
+   build: ./eureka
+   expose:
+   - "8761"
+   networks:
+   - frontend
+
+networks:
+  frontend:
+    driver: bridge
