@@ -39,6 +39,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile
+          file: ./Docker/eureka/Dockerfile
           push: false
           tags: springboot-app:latest
